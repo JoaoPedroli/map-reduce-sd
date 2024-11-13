@@ -1,4 +1,5 @@
 from pathlib import Path
+from re import search
 import threading
 
 def count_words():
@@ -16,14 +17,17 @@ def map(file):
     with open('temp.txt', 'a') as writer:
         with open(file, 'r') as reader:
             for line in reader:
-                for value in line.split():
-                    writer.write(f'{value} 1\n')
+                for word in line.split():
+                    if search(regex, word):
+                        writer.write(f'{word} 1\n')
 
 def reduce(word, occurrences):
     freq = len(occurrences)
-    print(f'{word}: number of occurrences: {freq}')
+    print(f'{word} | number of occurrences: {freq}')
 
 if __name__ == '__main__':
+    regex = input('Informe qual regex deseja usar: ')
+
     files = Path('./').glob('*')
     map_threads = []
     for file in files:
