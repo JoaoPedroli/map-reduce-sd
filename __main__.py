@@ -25,13 +25,21 @@ def reduce(word, occurrences):
 
 if __name__ == '__main__':
     files = Path('./').glob('*')
+    map_threads = []
     for file in files:
         tr = threading.Thread(target=map, args=[file])
         tr.start()
-        tr.join()
+        map_threads.append(tr)
+        
+    for thread in map_threads:
+        thread.join()
     
     d = count_words()
+    reduce_threads = []
     for word in d:
         tr = threading.Thread(target=reduce, args=[word, d[word]])
         tr.start()
-        tr.join()
+        reduce_threads.append(tr)
+
+    for thread in reduce_threads:
+        thread.join()
