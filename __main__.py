@@ -2,13 +2,12 @@ from pathlib import Path
 from re import search
 import threading
 
-def count_words():
+def count_lines():
     hashmap = {}
     with open('temp.txt', 'r') as reader:
         for line in reader:
-            word, value = line.split()
-            if word not in hashmap: hashmap[word] = []
-            hashmap[word].append(value)
+            if line not in hashmap: hashmap[line] = []
+            hashmap[line].append(1)
     hashmapsorted = dict(sorted(hashmap.items(), key=lambda item: item[1], reverse=True))
     return hashmapsorted
 
@@ -17,13 +16,17 @@ def map(file):
     with open('temp.txt', 'a') as writer:
         with open(file, 'r') as reader:
             for line in reader:
+                ok = False
                 for word in line.split():
                     if search(regex, word):
-                        writer.write(f'{word} 1\n')
+                        ok = True
+                if ok == True:
+                    writer.write(f'{line}\n')
 
-def reduce(word, occurrences):
+def reduce(line, occurrences):
     freq = len(occurrences)
-    print(f'{word} | number of occurrences: {freq}')
+    with open('ans.txt', 'a') as writer:
+        writer.write(f'{line}')
 
 if __name__ == '__main__':
     regex = input('Informe qual regex deseja usar: ')
@@ -32,13 +35,17 @@ if __name__ == '__main__':
     with open('temp.txt', 'w') as writer:
         writer.write('')
 
+    # limpando arquivo ans.txt
+    with open('ans.txt', 'w') as writer:
+        writer.write('')
+
     files = Path('./').glob('*')
     for file in files:
         tr = threading.Thread(target=map, args=[file])
         tr.start()
         tr.join()
     
-    d = count_words()
+    d = count_lines()
     for word in d:
         tr = threading.Thread(target=reduce, args=[word, d[word]])
         tr.start()
