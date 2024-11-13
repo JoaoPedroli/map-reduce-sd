@@ -13,7 +13,7 @@ def count_words():
     return hashmapsorted
 
 def map(file):
-    if file.name.startswith("aux") == False: return
+    if file.name.startswith("instance") == False: return
     with open('temp.txt', 'a') as writer:
         with open(file, 'r') as reader:
             for line in reader:
@@ -27,6 +27,10 @@ def reduce(word, occurrences):
 
 if __name__ == '__main__':
     regex = input('Informe qual regex deseja usar: ')
+
+    # limpando arquivo temp.txt
+    with open('temp.txt', 'w') as writer:
+        writer.write('')
 
     files = Path('./').glob('*')
     for file in files:
