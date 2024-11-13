@@ -21,11 +21,17 @@ def map(file):
 
 def reduce(word, occurrences):
     freq = len(occurrences)
-    print(f'{word} | number of occurrences: {freq}')
+    with open('ans.txt', 'a') as writer:
+        writer.write(f'{word} | number of occurrences: {freq}\n')
+    
 
 if __name__ == '__main__':
     # limpando arquivo temp.txt
     with open('temp.txt', 'w') as writer:
+        writer.write('')
+
+    # limpando arquivo ans.txt
+    with open('ans.txt', 'w') as writer:
         writer.write('')
 
     files = Path('./').glob('*')

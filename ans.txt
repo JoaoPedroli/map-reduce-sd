@@ -1,0 +1,8 @@
+cbd | number of occurrences: 2
+decedd | number of occurrences: 1
+cddcda | number of occurrences: 1
+ebbacb | number of occurrences: 1
+bacdba | number of occurrences: 1
+abaed | number of occurrences: 1
+ebdce | number of occurrences: 1
+dad | number of occurrences: 1
