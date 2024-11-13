@@ -12,7 +12,7 @@ def count_words():
     return hashmapsorted
 
 def map(file):
-    if file.name.endswith("txt") == False or file.name.startswith("temp"): return
+    if file.name.startswith("aux") == False: return
     with open('temp.txt', 'a') as writer:
         with open(file, 'r') as reader:
             for line in reader:
@@ -21,25 +21,17 @@ def map(file):
 
 def reduce(word, occurrences):
     freq = len(occurrences)
-    print(f'{word}: number of occurrences: {freq}')
+    print(f'{word} | number of occurrences: {freq}')
 
 if __name__ == '__main__':
     files = Path('./').glob('*')
-    map_threads = []
     for file in files:
         tr = threading.Thread(target=map, args=[file])
         tr.start()
-        map_threads.append(tr)
+        tr.join()
         
-    for thread in map_threads:
-        thread.join()
-    
     d = count_words()
-    reduce_threads = []
     for word in d:
         tr = threading.Thread(target=reduce, args=[word, d[word]])
         tr.start()
-        reduce_threads.append(tr)
-
-    for thread in reduce_threads:
-        thread.join()
+        tr.join()
